@@ -10,6 +10,7 @@ import time
 
 EN_COLOR="#03fca9"
 CZ_COLOR="#dd42eb"
+WRONG_DELAY = 4
 
 class LoadDialog(FloatLayout):
     load = ObjectProperty(None)
@@ -77,7 +78,7 @@ class Root(FloatLayout):
 
     def show_correct(self):
         self.c_label.text = f"Správná odpověď:\n[color=#ff0000]{self.dt.answer}[/color]"
-        Clock.schedule_once(self.hide_correct, 2)
+        Clock.schedule_once(self.hide_correct, WRONG_DELAY)
 
     def hide_correct(self, _):
         self.c_label.text = ""
