@@ -1,0 +1,3 @@
+title=DictTrainer
+author=Tomáš Čech
+orientation=landscape

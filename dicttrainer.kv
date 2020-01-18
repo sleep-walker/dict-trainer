@@ -1,0 +1,92 @@
+#:kivy 1.1.0
+
+Root:
+#    text_input: text_input
+    textbox: textbox
+    g_label: g_label
+    b_label: b_label
+    r_label: r_label
+    q_label: q_label
+    c_label: c_label
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            Label:
+                id: g_label
+                font_size: 30
+                markup: True
+                text: "[color=#00ff00]Správně:[/color] 0"
+            Label:
+                id: b_label
+                font_size: 30
+                markup: True
+                text: "[color=#ff0000]Špatně:[/color] 0"
+            Label:
+                id: r_label
+                font_size: 30
+                markup: True
+                text: "[color=#00ff]Zbývá:[/color] 0"
+            Button:
+                text: 'Reset'
+                on_release: root.reset()
+            Button:
+                text: 'Vybrat sadu'
+                on_release: root.show_load()
+        Label:
+            id: q_label
+            markup: True
+            font_size: 70
+            text: "Není nahrána žádná sada"
+        Label:
+            id: c_label
+            halign: 'center'
+            markup: True
+            font_size: 70
+            text: ""
+        TextInput:
+            id: textbox
+            size_hint_y: .2
+            multiline: False
+            font_size: 70
+            on_text_validate: root.check_answer()
+
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            multiselect: True
+            path: "data"
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: 30
+            ToggleButton:
+                group: "direction"
+                text: 'Z češtiny do angličtiny'
+                on_release: app.root.set_direction(['left'])
+            ToggleButton:
+                group: "direction"
+                text: 'Z angličtiny do češtiny'
+                on_release: app.root.set_direction(['right'])
+            ToggleButton:
+                group: "direction"
+                text: 'Oba směry'
+                on_release: app.root.set_direction(['left', 'right'])
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
