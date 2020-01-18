@@ -32,6 +32,7 @@ class Root(FloatLayout):
     def reset(self):
         self.dt.reset()
         self.generate_question()
+        Clock.schedule_once(self.set_focus_to_textinput, 0.1)
 
     def dismiss_popup(self):
         self._popup.dismiss()
