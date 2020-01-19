@@ -35,6 +35,7 @@ class DictTrainer():
 
     def load(self, path, filenames, direction):
         self.dictionary = []
+        self.filenames = filenames
         for fname in filenames:
             with open(os.path.join(path, os.path.basename(fname)), "r") as f:
                 lines = f.read().splitlines()

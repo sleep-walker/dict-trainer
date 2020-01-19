@@ -72,6 +72,7 @@ class Root(FloatLayout):
             self.dt.question = "[color=#ffffff]Není nahrána žádná sada[/color]"
         except dict_trainer.NoQuestionsLeft:
             self.dt.question = "[color=#ffffff]Dokončil jsi sadu[/color]"
+            self.log_activity()
         self.redraw()
 
     def set_focus_to_textinput(self, _):
@@ -93,6 +94,15 @@ class Root(FloatLayout):
         self.textbox.text = ""
         self.generate_question()
         Clock.schedule_once(self.set_focus_to_textinput, 0.1)
+
+    def log_activity(self):
+        with open("finished.log", "a") as f:
+            f.write(f"----Finished run----\n"
+                    f"filenames: {self.dt.filenames}\n"
+                    f"direction: {self.dt.directions}\n"
+                    f"good: {self.dt.good}\n"
+                    f"bad: {self.dt.bad}\n"
+            )
 
 
 class DictTrainer(App):
