@@ -6,11 +6,11 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 
 import dict_trainer
-import time
 
-EN_COLOR="#03fca9"
-CZ_COLOR="#dd42eb"
+EN_COLOR = "#03fca9"
+CZ_COLOR = "#dd42eb"
 WRONG_DELAY = 4
+
 
 class LoadDialog(FloatLayout):
     load = ObjectProperty(None)
@@ -79,7 +79,8 @@ class Root(FloatLayout):
         self.textbox.focus = True
 
     def show_correct(self):
-        self.c_label.text = f"Správná odpověď:\n[color=#ff0000]{self.dt.answer}[/color]"
+        self.c_label.text = (f"Správná odpověď:\n"
+                             f"[color=#ff0000]{self.dt.answer}[/color]")
         Clock.schedule_once(self.hide_correct, WRONG_DELAY)
 
     def hide_correct(self, _):
