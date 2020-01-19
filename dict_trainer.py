@@ -27,22 +27,23 @@ class DictTrainer():
         self.remaining = copy.copy(self.dictionary)
         self.in_progress = True
 
-    def add_translation(self, one, two, direction):
-        if "left" in direction:
+    def add_translation(self, one, two, directions):
+        if "left" in directions:
             self.dictionary.append((one, two, "left"))
-        if "right" in direction:
+        if "right" in directions:
             self.dictionary.append((two, one, "right"))
 
-    def load(self, path, filenames, direction):
+    def load(self, path, filenames, directions):
         self.dictionary = []
         self.filenames = filenames
+        self.directions = directions
         for fname in filenames:
             with open(os.path.join(path, os.path.basename(fname)), "r") as f:
                 lines = f.read().splitlines()
                 for line in lines:
                     translation = line.split("|", 1)
                     self.add_translation(translation[0], translation[1],
-                                         direction)
+                                         directions)
         self.reset()
 
     def check_answer(self, ans):
