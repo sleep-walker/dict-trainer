@@ -60,7 +60,7 @@ class DictTrainer():
 
     def check_answer(self, ans):
         if ans:
-            if ans == self.answer:
+            if ans.strip() == self.answer.strip():
                 self.good += 1
                 self.remaining.remove(self.selection)
                 return True
