@@ -56,6 +56,7 @@ class Root(FloatLayout):
             self.q_label.text = self.dt.question
 
     def show_load(self):
+        self.set_direction(["left", "right"])
         content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
         self._popup = Popup(title="Vybrat sadu...", content=content,
                             size_hint=(0.9, 0.9))
