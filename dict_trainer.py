@@ -31,6 +31,9 @@ class DictTrainer():
         self.in_progress = True
 
     def add_translation(self, one, two, directions):
+        if hasattr(one, "decode"):
+            one = one.decode("utf-8")
+            two = two.decode("utf-8")
         if "left" in directions:
             self.dictionary.append((one, two, "left"))
         if "right" in directions:
