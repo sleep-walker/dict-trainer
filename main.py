@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.uix.floatlayout import FloatLayout
@@ -45,9 +47,11 @@ class Root(FloatLayout):
         self.r_label.text = '[color=#0000ff]Zbývá:[/color] %d' % len(self.dt.remaining)
         if self.dt.in_progress:
             if self.dt.direction == "left":
-                self.q_label.text = f"[color={EN_COLOR}]{self.dt.question}[/color]"
+                self.q_label.text = "[color=%s]%s[/color]" % (
+                    EN_COLOR, self.dt.question)
             else:
-                self.q_label.text = f"[color={CZ_COLOR}]{self.dt.question}[/color]"
+                self.q_label.text = "[color=%s]%s[/color]" % (
+                    CZ_COLOR, self.dt.question)
         else:
             self.q_label.text = self.dt.question
 
@@ -79,8 +83,8 @@ class Root(FloatLayout):
         self.textbox.focus = True
 
     def show_correct(self):
-        self.c_label.text = (f"Správná odpověď:\n"
-                             f"[color=#ff0000]{self.dt.answer}[/color]")
+        self.c_label.text = ("Správná odpověď:\n"
+                             "[color=#ff0000]%s[/color]") % self.dt.answer
         Clock.schedule_once(self.hide_correct, WRONG_DELAY)
 
     def hide_correct(self, _):
@@ -98,12 +102,12 @@ class Root(FloatLayout):
 
     def log_activity(self):
         with open("finished.log", "a") as f:
-            f.write(f"----Finished run----\n"
-                    f"filenames: {self.dt.filenames}\n"
-                    f"direction: {self.dt.directions}\n"
-                    f"good: {self.dt.good}\n"
-                    f"bad: {self.dt.bad}\n"
-            )
+            f.write("----Finished run----\n"
+                    "filenames: %s\n"
+                    "direction: %s\n"
+                    "good: %s\n"
+                    "bad: %s\n"
+            ) % (self.dt.filenames, self.dt.directions, self.dt.good, self.dt.bad)
 
 
 class DictTrainer(App):
