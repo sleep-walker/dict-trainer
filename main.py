@@ -65,9 +65,14 @@ class Root(FloatLayout):
         self.direction = direction
 
     def load(self, path, filenames):
-        self.dt.load(path, filenames, self.direction)
-        self.dismiss_popup()
-        self.reset()
+        try:
+            self.dt.load(path, filenames, self.direction)
+        except dict_trainer.CorruptedFile as e:
+            self.q_label.text = str(e)
+        else:
+            self.reset()
+        finally:
+            self.dismiss_popup()
 
     def generate_question(self):
         try:
