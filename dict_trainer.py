@@ -51,8 +51,11 @@ class DictTrainer():
                         translation = line.split("|", 1)
                         self.add_translation(translation[0], translation[1],
                                              directions)
-                    except Exception:
-                        raise CorruptedFile("Corruption detected: %s on line %s" % (fname, n))
+                    except Exception as e:
+                        m = (
+                            "Corruption detected: %s on line %s: %s" %
+                            (fname, n + 1, e))
+                        raise CorruptedFile(m)
         self.reset()
 
     def check_answer(self, ans):
