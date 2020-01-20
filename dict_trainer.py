@@ -11,6 +11,9 @@ class NoQuestionsLoaded(Exception):
     pass
 
 
+class CorruptedFile(Exception):
+    pass
+
 class DictTrainer():
     dictionary = []
     remaining = []
@@ -40,10 +43,13 @@ class DictTrainer():
         for fname in filenames:
             with open(os.path.join(path, os.path.basename(fname)), "r") as f:
                 lines = f.read().splitlines()
-                for line in lines:
-                    translation = line.split("|", 1)
-                    self.add_translation(translation[0], translation[1],
-                                         directions)
+                for n, line in enumerate(lines):
+                    try:
+                        translation = line.split("|", 1)
+                        self.add_translation(translation[0], translation[1],
+                                             directions)
+                    except Exception:
+                        raise CorruptedFile("Corruption detected: %s on line %s" % (fname, n))
         self.reset()
 
     def check_answer(self, ans):
