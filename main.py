@@ -44,7 +44,8 @@ class Root(FloatLayout):
     def redraw(self):
         self.g_label.text = '[color=#00ff00]Správně:[/color] %d' % self.dt.good
         self.b_label.text = '[color=#ff0000]Špatně:[/color] %d' % self.dt.bad
-        self.r_label.text = '[color=#0000ff]Zbývá:[/color] %d' % len(self.dt.remaining)
+        self.r_label.text = '[color=#0000ff]Zbývá:[/color] %d' % len(
+            self.dt.remaining)
         if self.dt.in_progress:
             if self.dt.direction == "left":
                 self.q_label.text = "[color=%s]%s[/color]" % (
@@ -112,8 +113,8 @@ class Root(FloatLayout):
                     "filenames: %s\n"
                     "direction: %s\n"
                     "good: %s\n"
-                    "bad: %s\n"
-            ) % (self.dt.filenames, self.dt.directions, self.dt.good, self.dt.bad)
+                    "bad: %s\n") % (self.dt.filenames, self.dt.directions,
+                                    self.dt.good, self.dt.bad)
 
 
 class DictTrainer(App):
