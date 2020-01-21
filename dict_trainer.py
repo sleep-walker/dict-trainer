@@ -14,6 +14,7 @@ class NoQuestionsLoaded(Exception):
 class CorruptedFile(Exception):
     pass
 
+
 class DictTrainer():
     dictionary = []
     remaining = []

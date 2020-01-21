@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.uix.floatlayout import FloatLayout
 from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
+
+import sys
+import os
 
 import dict_trainer
 
@@ -42,16 +45,16 @@ class Root(FloatLayout):
         self._popup.dismiss()
 
     def redraw(self):
-        self.g_label.text = '[color=#00ff00]Správně:[/color] %d' % self.dt.good
-        self.b_label.text = '[color=#ff0000]Špatně:[/color] %d' % self.dt.bad
-        self.r_label.text = '[color=#0000ff]Zbývá:[/color] %d' % len(
+        self.g_label.text = u"[color=#00ff00]Správně:[/color] %d" % self.dt.good
+        self.b_label.text = u"[color=#ff0000]Špatně:[/color] %d" % self.dt.bad
+        self.r_label.text = u"[color=#0000ff]Zbývá:[/color] %d" % len(
             self.dt.remaining)
         if self.dt.in_progress:
             if self.dt.direction == "left":
-                self.q_label.text = "[color=%s]%s[/color]" % (
+                self.q_label.text = u"[color=%s]%s[/color]" % (
                     EN_COLOR, self.dt.question)
             else:
-                self.q_label.text = "[color=%s]%s[/color]" % (
+                self.q_label.text = u"[color=%s]%s[/color]" % (
                     CZ_COLOR, self.dt.question)
         else:
             self.q_label.text = self.dt.question
@@ -80,9 +83,9 @@ class Root(FloatLayout):
         try:
             self.dt.generate_question()
         except dict_trainer.NoQuestionsLoaded:
-            self.dt.question = "[color=#ffffff]Není nahrána žádná sada[/color]"
+            self.dt.question = u"[color=#ffffff]Není nahrána žádná sada[/color]"
         except dict_trainer.NoQuestionsLeft:
-            self.dt.question = "[color=#ffffff]Dokončil jsi sadu[/color]"
+            self.dt.question = u"[color=#ffffff]Dokončil jsi sadu[/color]"
             self.log_activity()
         self.redraw()
 
@@ -90,8 +93,8 @@ class Root(FloatLayout):
         self.textbox.focus = True
 
     def show_correct(self):
-        self.c_label.text = ("Správná odpověď:\n"
-                             "[color=#ff0000]%s[/color]") % self.dt.answer
+        self.c_label.text = (u"Správná odpověď:\n"
+                             u"[color=#ff0000]%s[/color]") % self.dt.answer
         Clock.schedule_once(self.hide_correct, WRONG_DELAY)
 
     def hide_correct(self, _):
@@ -109,12 +112,11 @@ class Root(FloatLayout):
 
     def log_activity(self):
         with open("finished.log", "a") as f:
-            f.write("----Finished run----\n"
-                    "filenames: %s\n"
-                    "direction: %s\n"
-                    "good: %s\n"
-                    "bad: %s\n") % (self.dt.filenames, self.dt.directions,
-                                    self.dt.good, self.dt.bad)
+            f.write(u"----Finished run----\n")
+            f.write(u"filenames: %s\n" % self.dt.filenames)
+            f.write(u"direction: %s\n" % self.dt.directions)
+            f.write(u"good: %s\n" % self.dt.good)
+            f.write(u"bad: %s\n" % self.dt.bad)
 
 
 class DictTrainer(App):
