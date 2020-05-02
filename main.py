@@ -94,7 +94,7 @@ class Root(FloatLayout):
 
     def show_correct(self):
         self.c_label.text = (u"Správná odpověď:\n"
-                             u"[color=#ff0000]%s[/color]") % self.dt.answer
+                             u"[color=#ff0000]%s[/color]") % self.dt.get_correct_answer()
         Clock.schedule_once(self.hide_correct, WRONG_DELAY)
 
     def hide_correct(self, _):

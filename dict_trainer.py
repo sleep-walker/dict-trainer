@@ -1,7 +1,8 @@
+import copy
 import os
 import random
-import copy
-
+import re
+from enum import Enum
 
 class NoQuestionsLeft(Exception):
     pass
@@ -13,6 +14,18 @@ class NoQuestionsLoaded(Exception):
 
 class CorruptedFile(Exception):
     pass
+
+
+re_enter = re.compile(r" \([^)]+\)")
+
+
+def filter_answer_part(s):
+    s = re_enter.sub("", s)
+    return s
+
+
+def filter_question_part(s):
+    return s.replace("|", r"\n")
 
 
 class DictTrainer():
@@ -40,6 +53,34 @@ class DictTrainer():
         if "right" in directions:
             self.dictionary.append((two, one, "right"))
 
+
+    def process_line_v1(self, line, directions):
+        translation = line.split("|", 1)
+        self.add_translation(translation[0], translation[1], directions)
+
+    def process_direction(self, question, answer, direction):
+        self.dictionary.append((filter_question_part(question),
+                                filter_answer_part(answer),
+                                direction))
+
+    def process_line(self, line, directions):
+        if "||" not in line:
+            return self.process_line_v1(line, directions)
+
+        native, foreign = line.split("||", 1)
+        native = native.strip()
+        foreign = foreign.strip()
+        if "left" in directions:
+            for n in native.split("|"):
+                n = n.strip()
+                self.dictionary.append((n, foreign, "left"))
+
+        if "right" in directions:
+            for n in foreign.split("|"):
+                n = n.strip()
+                self.dictionary.append((n, native, "left"))
+
+
     def load(self, path, filenames, directions):
         self.dictionary = []
         self.filenames = filenames
@@ -49,9 +90,7 @@ class DictTrainer():
                 lines = f.read().splitlines()
                 for n, line in enumerate(lines):
                     try:
-                        translation = line.split("|", 1)
-                        self.add_translation(translation[0], translation[1],
-                                             directions)
+                        self.process_line(line, directions)
                     except Exception as e:
                         m = (
                             "Corruption detected: %s on line %s: %s" %
@@ -61,13 +100,17 @@ class DictTrainer():
 
     def check_answer(self, ans):
         if ans:
-            if ans.strip() == self.answer.strip():
+            possible_answers = [filter_answer_part(s).strip() for s in self.answer.split("|")]
+            if ans.strip() in possible_answers:
                 self.good += 1
                 self.remaining.remove(self.selection)
                 return True
             else:
                 self.bad += 1
                 return False
+
+    def get_correct_answer(self):
+        return self.answer.replace("|", ", ")
 
     def generate_question(self):
         if not self.dictionary:
