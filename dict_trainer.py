@@ -101,7 +101,7 @@ class DictTrainer():
     def check_answer(self, ans):
         if ans:
             possible_answers = [filter_answer_part(s).strip() for s in self.answer.split("|")]
-            if ans.strip() in possible_answers:
+            if ans.strip() in possible_answers or all((a in possible_answers) for a in ans.strip().split(", ")):
                 self.good += 1
                 self.remaining.remove(self.selection)
                 return True
