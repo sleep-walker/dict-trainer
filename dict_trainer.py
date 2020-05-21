@@ -44,29 +44,12 @@ class DictTrainer():
         self.remaining = copy.copy(self.dictionary)
         self.in_progress = True
 
-    def add_translation(self, one, two, directions):
-        if hasattr(one, "decode"):
-            one = one.decode("utf-8")
-            two = two.decode("utf-8")
-        if "left" in directions:
-            self.dictionary.append((one, two, "left"))
-        if "right" in directions:
-            self.dictionary.append((two, one, "right"))
-
-
-    def process_line_v1(self, line, directions):
-        translation = line.split("|", 1)
-        self.add_translation(translation[0], translation[1], directions)
-
     def process_direction(self, question, answer, direction):
         self.dictionary.append((filter_question_part(question),
                                 filter_answer_part(answer),
                                 direction))
 
     def process_line(self, line, directions):
-        if "||" not in line:
-            return self.process_line_v1(line, directions)
-
         native, foreign = line.split("||", 1)
         native = native.strip()
         foreign = foreign.strip()
