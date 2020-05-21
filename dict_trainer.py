@@ -2,7 +2,6 @@ import copy
 import os
 import random
 import re
-from enum import Enum
 
 class NoQuestionsLeft(Exception):
     pass
