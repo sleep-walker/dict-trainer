@@ -14,7 +14,7 @@ import dict_trainer
 
 EN_COLOR = "#03fca9"
 CZ_COLOR = "#dd42eb"
-WRONG_DELAY = 4
+WRONG_DELAY = 10
 
 
 class LoadDialog(FloatLayout):
@@ -94,7 +94,8 @@ class Root(FloatLayout):
 
     def show_correct(self):
         self.c_label.text = (u"Správná odpověď:\n"
-                             u"[color=#ff0000]%s[/color]") % self.dt.get_correct_answer()
+                             u"%s\n"
+                             u"[color=#ff0000]%s[/color]") % (self.dt.question, self.dt.get_correct_answer())
         Clock.schedule_once(self.hide_correct, WRONG_DELAY)
 
     def hide_correct(self, _):
